@@ -1,0 +1,40 @@
+---
+- hosts: rancherservers
+  vars:
+    http_port: 80
+    max_clients: 200
+  remote_user: root
+  tasks:
+  - name: ensure apache is at the latest version
+    yum:
+      name: httpd
+      state: latest
+  - name: ensure apache is running
+    service:
+      name: httpd
+      state: started
+  - name: ensure git is at the latest version
+    yum:
+      name: git
+      state: latest
+  - name: ensure Docker is at the required/accepted version
+    yum:
+      name: docker-ce-17.03.0.ce-1.el7.centos.x86_64
+      state: installed
+  - name: ensure docker is running
+    service:
+      name: docker
+      state: started
+  handlers:
+    - name: restart apache
+      service:
+        name: httpd
+        state: restarted
+    - name: restart git
+      service:
+        name: git
+        state: restarted
+    - name: restart docker
+      service:
+        name: docker
+        state: restarted
