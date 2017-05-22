@@ -25,6 +25,21 @@
     service:
       name: docker
       state: started
+  - name: ensure pip is installed at latest version
+    yum:
+      name: python-pip
+      state: latest
+  - name: ensure docker-py is installed
+    pip:
+      name: docker-py
+      state: present
+  - name: ensure rancher  is up & running
+    docker_container:
+      name: rancherserver
+      image: rancher/server:stable
+      state: present
+      ports:
+      - "8080:8080"
   handlers:
     - name: restart apache
       service:
@@ -38,3 +53,5 @@
       service:
         name: docker
         state: restarted
+
+        
