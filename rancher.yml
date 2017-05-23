@@ -1,18 +1,7 @@
 ---
 - hosts: rancherservers
-  vars:
-    http_port: 80
-    max_clients: 200
   remote_user: root
   tasks:
-  - name: ensure apache is at the latest version
-    yum:
-      name: httpd
-      state: latest
-  - name: ensure apache is running
-    service:
-      name: httpd
-      state: started
   - name: ensure git is at the latest version
     yum:
       name: git
@@ -41,10 +30,6 @@
       ports:
       - "8080:8080"
   handlers:
-    - name: restart apache
-      service:
-        name: httpd
-        state: restarted
     - name: restart git
       service:
         name: git
