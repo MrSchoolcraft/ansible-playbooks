@@ -1,7 +1,18 @@
 ---
 - hosts: rancherservers
+  vars:
+    http_port: 80
+    max_clients: 200
   remote_user: root
   tasks:
+  - name: ensure Yum security plugin is installed
+    yum:
+      name: yum-plugin-security
+      state: latest
+  - name: ensure version lock is installed for required versions
+    yum:
+      name: yum-versionlock
+      state: latest
   - name: ensure git is at the latest version
     yum:
       name: git
@@ -10,10 +21,16 @@
     yum:
       name: docker-ce-17.03.0.ce-1.el7.centos.x86_64
       state: installed
+  - name: add Docker to versionlock
+    command: yum versionlock add docker-ce
   - name: ensure docker is running
     service:
       name: docker
       state: started
+  - name: update all non-locked packages
+    yum:
+      name: '*'
+      state: latest
   - name: ensure pip is installed at latest version
     yum:
       name: python-pip
@@ -30,6 +47,10 @@
       ports:
       - "8080:8080"
   handlers:
+    - name: restart apache
+      service:
+        name: httpd
+        state: restarted
     - name: restart git
       service:
         name: git
@@ -38,5 +59,3 @@
       service:
         name: docker
         state: restarted
-
-        
