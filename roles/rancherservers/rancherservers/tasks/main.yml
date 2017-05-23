@@ -1,0 +1,42 @@
+tasks:
+  - name: ensure Yum security plugin is installed
+    yum:
+      name: yum-plugin-security
+      state: latest
+  - name: ensure version lock is installed for required versions
+    yum:
+      name: yum-versionlock
+      state: latest
+  - name: ensure git is at the latest version
+    yum:
+      name: git
+      state: latest
+  - name: ensure Docker is at the required/accepted version
+    yum:
+      name: docker-ce-17.03.0.ce-1.el7.centos.x86_64
+      state: installed
+  - name: add Docker to versionlock
+    command: yum versionlock add docker-ce*
+  - name: ensure docker is running
+    service:
+      name: docker
+      state: started
+  - name: ensure EPEL release installed and updated
+    yum:
+      name: epel-release
+      state: latest
+  - name: ensure pip is installed at latest version
+    yum:
+      name: python-pip
+      state: latest
+  - name: ensure docker-py is installed
+    pip:
+      name: docker-py
+      state: present
+  - name: ensure rancher  is up & running
+    docker_container:
+      name: rancherserver
+      image: rancher/server:stable
+      state: present
+      ports:
+      - "8080:8080"
