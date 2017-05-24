@@ -1,8 +1,8 @@
-- name: restart nfs-server		
+- name: nfs-restart	
   service:		
     name: nfs-server		
     state: restarted		
-- name: restart rpcbind		
+- name: rpcbind-restart		
   service:		
     name: rpcbind		
     state: restarted		
