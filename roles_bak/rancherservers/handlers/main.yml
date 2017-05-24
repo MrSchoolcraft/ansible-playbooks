@@ -1,0 +1,8 @@
+- name: restart git
+  service:
+    name: git
+    state: restarted
+- name: restart docker
+  service:
+    name: docker
+    state: restarted
