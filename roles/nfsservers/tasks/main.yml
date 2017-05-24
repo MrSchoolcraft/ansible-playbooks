@@ -30,18 +30,25 @@
   service:
     name: rpcbind
     state: started
+- name: Set share file path here
+  set_fact: nfs_share_path=/var/nfs
+
 - name: Create main NFS share location
-  file: path=/var/nfs state=directory owner=nobody group=nobody mode=0755
+  file: path={{ nfs_share_path }} state=directory owner=nobody group=nobody mode=0755
+
 # Define file path
-- name: Set remote file path here
+- name: Set export file path here
   set_fact: nfs_epxports_path=/etc/exports 
 
-# Check remote file
+#create a blank file
+- name: Create a new file
+  file: path="{{ nfs_epxports_path }}" state=touch
+
 - stat: path="{{ nfs_epxports_path }}"
   register: file_path
 
 # Write file content in file_content variable
-- set_fact: file_content="{{ nfs_epxports_path }} 192.168.0.0/24(rw,sync)"
+- set_fact: file_content="{{ nfs_share_path }} 192.168.0.0/24(rw,sync)"
 
 # If file exist then copy content in remote file.
 - copy: content="{{ file_content }}" dest="{{ nfs_epxports_path }}"
