@@ -36,22 +36,21 @@
 - name: Create main NFS share location
   file: path={{ nfs_share_path }} state=directory owner=nobody group=nobody mode=0755
 
-# Define file path
 - name: Set export file path here
   set_fact: nfs_epxports_path=/etc/exports 
-
-#create a blank file
-- name: Create a new file
-  file: path="{{ nfs_epxports_path }}" state=touch
 
 - stat: path="{{ nfs_epxports_path }}"
   register: file_path
 
-# Write file content in file_content variable
-- set_fact: file_content="{{ nfs_share_path }} 192.168.0.0/24(rw,sync)"
+- name: Create a new exports file if it does not exist
+  file: path="{{ nfs_epxports_path }}" state=touch
+  when: file_path.stat.exists == False
 
-# If file exist then copy content in remote file.
-- copy: content="{{ file_content }}" dest="{{ nfs_epxports_path }}"
+- name: Write file content in file_content variable
+  set_fact: file_content="{{ nfs_share_path }} 192.168.0.0/24(rw,sync)"
+
+- name: If file exist then copy content in remote file.
+  copy: content="{{ file_content }}" dest="{{ nfs_epxports_path }}"
   when: file_path.stat.exists == true
 
 - name: run the export file and restart nfs-server
