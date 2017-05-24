@@ -41,7 +41,7 @@
   register: file_path
 
 # Write file content in file_content variable
-- set_fact: file_content="Write your file content here"
+- set_fact: file_content="{{ nfs_epxports_path }} 192.168.0.0/24(rw,sync)"
 
 # If file exist then copy content in remote file.
 - copy: content="{{ file_content }}" dest="{{ nfs_epxports_path }}"
