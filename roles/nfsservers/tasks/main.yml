@@ -53,3 +53,7 @@
 # If file exist then copy content in remote file.
 - copy: content="{{ file_content }}" dest="{{ nfs_epxports_path }}"
   when: file_path.stat.exists == true
+
+- name: run the export file and restart nfs-server
+  command: exportfs -ra
+  notify: nfs-restart
