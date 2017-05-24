@@ -3,16 +3,3 @@
   remote_user: root
   roles:
      - rancherservers
-  handlers:
-    - name: restart apache
-      service:
-        name: httpd
-        state: restarted
-    - name: restart git
-      service:
-        name: git
-        state: restarted
-    - name: restart docker
-      service:
-        name: docker
-        state: restarted
