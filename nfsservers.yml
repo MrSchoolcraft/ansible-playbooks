@@ -1,0 +1,5 @@
+---
+- hosts: nfsservers
+  remote_user: root
+  roles:
+     - nfsservers
