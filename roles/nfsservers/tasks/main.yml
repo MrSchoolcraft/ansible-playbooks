@@ -22,3 +22,11 @@
   yum:
     name: '*'
     state: latest
+- name: ensure nfs-server is up and running
+  service:
+    name: nfs-server
+    state: started
+- name: ensure rpcbind is up and running
+  service:
+    name: rpcbind
+    state: started
