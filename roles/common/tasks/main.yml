@@ -1,0 +1,24 @@
+- name: ensure nfs-utils is installed at latest version
+  yum:
+    name: nfs-utils
+    state: latest
+- name: ensure libnfsidmap is installed at latest version
+  yum:
+    name: libnfsidmap
+    state: latest
+- name: ensure Yum security plugin is installed
+  yum:
+    name: yum-plugin-security
+    state: latest
+- name: ensure version lock is installed for required versions
+  yum:
+    name: yum-versionlock
+    state: latest
+- name: ensure EPEL release installed and updated
+  yum:
+    name: epel-release
+    state: latest
+- name: ensure pip is installed at latest version
+  yum:
+    name: python-pip
+    state: latest

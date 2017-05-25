@@ -2,4 +2,5 @@
 - hosts: nfsservers
   remote_user: root
   roles:
+     - common
      - nfsservers
